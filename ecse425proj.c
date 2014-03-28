@@ -58,7 +58,26 @@ void matVecMult(int N, const double *matA, const double *vecB, double *vecC)
 {
     if(dlayout == RowMaj)
     {
-        // Code in your naive implementation here
+        int rowCount = 0;
+        int colCount = 0;
+
+        //Loop through rows 
+        while(rowCount < N){
+            
+            //Reset column index
+            colCount = 0;
+
+            //Loop through the columns
+            while(colCount < N){
+
+                //Multiply and accumulate
+                int matIndex = rowCount * N + colCount;
+                vecC[rowCount] = vecC[rowCount] + matA[matIndex] * vecB[colCount];
+                
+                colCount++;
+            }
+            rowCount++;
+        }
     }
 }
 
