@@ -49,7 +49,30 @@ void matMult(int N, const double *matA, const double *matB, double *matC)
 {
     if(dlayout == RowMaj)
     {
-        // Code in your naive implementation here
+	int i, cIndex, columnNum, rowNum, aIndex, bIndex;
+	double sumTotal;
+
+	// Iterate along the indices of matC
+	for (cIndex = 0; cIndex < N*N-1; cIndex++) {
+		// Re-Initialize sumTotal		
+		sumTotal = 0;
+
+		// Decode the Index to find the appropriate Column and Row
+		columnNum = cIndex % N;
+		rowNum = cIndex/N;
+
+		for (i = 0; i < N-1; i++) {
+			// Recalculate the indices for A and B arrays
+			aIndex = N*rowNum + i;
+			bIndex = columnNum+i*N;
+
+			// Sum up the next iteration of multiplication
+			sumTotal = sumTotal + matA[aIndex]*matB[bIndex];
+		}
+		
+		// Place final answer in appropriate place
+		matC[cIndex] = sumTotal;
+	}
     }
 
 }
