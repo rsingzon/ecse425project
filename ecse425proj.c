@@ -53,7 +53,7 @@ void matMult(int N, const double *matA, const double *matB, double *matC)
 	double sumTotal;
 
 	// Iterate along the indices of matC
-	for (cIndex = 0; cIndex < N*N-1; cIndex++) {
+	for (cIndex = 0; cIndex < N*N; cIndex++) {
 		// Re-Initialize sumTotal		
 		sumTotal = 0;
 
