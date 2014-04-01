@@ -61,10 +61,12 @@ void matMult(int N, const double *matA, const double *matB, double *matC)
 		columnNum = cIndex % N;
 		rowNum = cIndex/N;
 
-		for (i = 0; i < N-1; i++) {
+		for (i = 0; i < N; i++) {
 			// Recalculate the indices for A and B arrays
 			aIndex = N*rowNum + i;
 			bIndex = columnNum+i*N;
+			
+			//printf(" indexA: %d, indexB: %d \n", aIndex,bIndex);
 
 			// Sum up the next iteration of multiplication
 			sumTotal = sumTotal + matA[aIndex]*matB[bIndex];
