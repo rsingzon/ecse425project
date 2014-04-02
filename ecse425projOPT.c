@@ -5,7 +5,20 @@
 
 void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC) 
 {
-    
+    int indexC, indexB;
+    double sumTotal = 0;    
+
+    for (indexC = 0; indexC < N; indexC++) {
+	sumTotal = 0;
+
+	for (indexB = 0; indexB < N; indexB++) {
+		sumTotal = sumTotal + matA[indexC*N+indexB]*vecB[indexB];
+	}
+
+
+	vecC[indexC] = sumTotal;
+	
+    }
 }
 
 void matMult_opt(int N, const double *matA, const double *matB, double *matC) 
