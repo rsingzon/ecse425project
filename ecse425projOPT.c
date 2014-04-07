@@ -23,58 +23,42 @@ void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC)
 
 void matMult_opt(int N, const double *matA, const double *matB, double *matC) 
 {
-	int i, j, k, jj, kk;
-	int reuseFactor = 2;
-	int aIndex, bIndex, cIndex;
-	double aValue;
+	int i, j, k;
+    int aIndex, bIndex, cIndex;
+    double sumTotal;
 
+    //Allocate memory for the rows of A and C
+    double* rowA = (double*) malloc(N * sizeof(double));
+    //double* colB = (double*) malloc(N * sizeof(double));
 
-    // Separate the matrix into smaller chunks
-    for (kk = 0; kk < N; kk = kk + reuseFactor) {
-        for (jj = 0; jj < N; jj = jj + reuseFactor) {
-        	for (i = 0; i < N; i++){
+    for (i = 0; i < N; i++) {
 
-        		int kMin;
-        		if ( (kk + reuseFactor - 1) < N ){
-        			kMin = kk + reuseFactor - 1;
-        		}
-        		else{
-        			kMin = N;
-        		}
+        rowA = &matA[i * N];
 
-        		for (k = kk; k <= kMin; k++){
-        			aIndex = i*N + k;
-        			aValue = matA[aIndex];
-        			
+        for (j = 0; j < N; j++) {
 
-        			int jMin;
-        			if ( (jj + reuseFactor - 1) < N){
-        				jMin = jj + reuseFactor -1;
-        			}
-        			else{
-        				jMin = N;
-        			}
+            sumTotal = 0.0;    
 
-        			for(j = jj; j < jMin; j++){
-        				bIndex = k*N + j;
-        				cIndex = i*N + j;
+            //Sum the products of row indices of A and column indices of B
+            for (k = 0; k < N; k++) {
+                double aIK = rowA[k];
+                //printf("%e, ", aIK);
+                bIndex = k*N + j;
+                
+                sumTotal = sumTotal + aIK * matB[bIndex];                
+            }
 
-        			//	printf("Index: %d\n", bIndex);
-
-        				matC[cIndex] += aValue * matB[bIndex];
-        			}
-        		}
-        	}
-        //	printf("break\n");
+            //printf("\n");
+            cIndex = i*N + j;
+            matC[cIndex] = sumTotal;
         }
     }
         	
-/*
+
+    /*
 	for(i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
 			
-
-
         	// Sum total
         	double sumTotal = 0.0;    
 
@@ -88,6 +72,6 @@ void matMult_opt(int N, const double *matA, const double *matB, double *matC)
         	cIndex = i*N + j;
             matC[cIndex] = sumTotal;
         }
-    }
-    */
+    }*/
+    
 }
