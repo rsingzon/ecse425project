@@ -24,9 +24,6 @@ void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC)
 void matMult_opt(int N, const double *matA, const double *matB, double *matC) 
 {
 	int i, j, k;
-    int aIndex, bIndex, cIndex;
-    double sumTotal;
-
     int ii, jj, kk;
     int tile_size = 32;
 
@@ -51,7 +48,11 @@ void matMult_opt(int N, const double *matA, const double *matB, double *matC)
     }
 
 
-    /*//Allocate memory for the rows of A and C
+    /*
+    int aIndex, bIndex, cIndex;
+    double sumTotal;
+
+    //Allocate memory for the rows of A and C
     double* rowA = (double*) malloc(N * sizeof(double));
     double* rowB = (double*) malloc(N * sizeof(double));
 
