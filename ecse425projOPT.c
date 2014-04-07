@@ -27,7 +27,31 @@ void matMult_opt(int N, const double *matA, const double *matB, double *matC)
     int aIndex, bIndex, cIndex;
     double sumTotal;
 
-    //Allocate memory for the rows of A and C
+    int ii, jj, kk;
+    int tile_size = 32;
+
+    for(i = 0; i < N; i+= tile_size) {
+        for(j = 0; j < N; j+=tile_size) {
+            for(k = 0; k < N; k+=tile_size) {
+
+                int iiMin = (i+tile_size) < N ? (i+tile_size) : N;
+                for(ii = i; ii < iiMin; ++ii) {
+
+                    int jjMin = (j+tile_size) < N ? (j+tile_size) : N;
+                    for(jj = j; jj < jjMin; ++jj) {
+
+                        int kkMin = (k+tile_size) < N ? (k+tile_size) : N;
+                        for(kk = k; kk < kkMin; ++kk) {
+                            matC[ii*N + jj] += matA[ii*N + kk] * matB[kk*N + jj];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /*//Allocate memory for the rows of A and C
     double* rowA = (double*) malloc(N * sizeof(double));
     double* rowB = (double*) malloc(N * sizeof(double));
 
@@ -51,5 +75,5 @@ void matMult_opt(int N, const double *matA, const double *matB, double *matC)
             }
             printf("\n");
         }
-    }    
+    }*/    
 }
