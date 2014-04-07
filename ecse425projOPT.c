@@ -23,71 +23,58 @@ void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC)
 
 void matMult_opt(int N, const double *matA, const double *matB, double *matC) 
 {
-	int i, j, k, jj, kk;
-	int reuseFactor = 2;
-	int aIndex, bIndex, cIndex;
-	double aValue;
+	int i, j, k;
+    int ii, jj, kk;
+    int tile_size = 32;
 
+    for(i = 0; i < N; i+= tile_size) {
+        for(j = 0; j < N; j+=tile_size) {
+            for(k = 0; k < N; k+=tile_size) {
 
-    // Separate the matrix into smaller chunks
-    for (kk = 0; kk < N; kk = kk + reuseFactor) {
-        for (jj = 0; jj < N; jj = jj + reuseFactor) {
-        	for (i = 0; i < N; i++){
+                int iiMin = (i+tile_size) < N ? (i+tile_size) : N;
+                for(ii = i; ii < iiMin; ++ii) {
 
-        		int kMin;
-        		if ( (kk + reuseFactor - 1) < N ){
-        			kMin = kk + reuseFactor - 1;
-        		}
-        		else{
-        			kMin = N;
-        		}
+                    int jjMin = (j+tile_size) < N ? (j+tile_size) : N;
+                    for(jj = j; jj < jjMin; ++jj) {
 
-        		for (k = kk; k <= kMin; k++){
-        			aIndex = i*N + k;
-        			aValue = matA[aIndex];
-        			
-
-        			int jMin;
-        			if ( (jj + reuseFactor - 1) < N){
-        				jMin = jj + reuseFactor -1;
-        			}
-        			else{
-        				jMin = N;
-        			}
-
-        			for(j = jj; j < jMin; j++){
-        				bIndex = k*N + j;
-        				cIndex = i*N + j;
-
-        			//	printf("Index: %d\n", bIndex);
-
-        				matC[cIndex] += aValue * matB[bIndex];
-        			}
-        		}
-        	}
-        //	printf("break\n");
+                        int kkMin = (k+tile_size) < N ? (k+tile_size) : N;
+                        for(kk = k; kk < kkMin; ++kk) {
+                            matC[ii*N + jj] += matA[ii*N + kk] * matB[kk*N + jj];
+                        }
+                    }
+                }
+            }
         }
     }
-        	
-/*
-	for(i = 0; i < N; i++){
-		for(j = 0; j < N; j++){
-			
 
 
-        	// Sum total
-        	double sumTotal = 0.0;    
+    /*
+    int aIndex, bIndex, cIndex;
+    double sumTotal;
 
-        	for (k = 0; k < N; k++){
-        		aIndex = i*N + k;
-        		bIndex = k*N + j;
+    //Allocate memory for the rows of A and C
+    double* rowA = (double*) malloc(N * sizeof(double));
+    double* rowB = (double*) malloc(N * sizeof(double));
 
-        		sumTotal = sumTotal + matA[aIndex] * matB[bIndex];
-        	}
-               	
-        	cIndex = i*N + j;
-            matC[cIndex] = sumTotal;
+    for (i = 0; i < N; i++) {
+
+
+        rowA = &matA[i * N];
+
+        for (k = 0; k < N; k++) {
+
+            sumTotal = 0.0;    
+            rowB = &matB[k * N];
+            double aIK = rowA[k];
+
+            //Sum the products of row indices of A and column indices of B
+            for (j = 0; j < N; j++) {                
+                
+                cIndex = i*N + j;
+                printf("%d ", cIndex);
+                matC[cIndex] += aIK * rowB[j];
+            }
+            printf("\n");
         }
-    }
-    */
+    }*/    
 }
