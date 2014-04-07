@@ -29,49 +29,27 @@ void matMult_opt(int N, const double *matA, const double *matB, double *matC)
 
     //Allocate memory for the rows of A and C
     double* rowA = (double*) malloc(N * sizeof(double));
-    //double* colB = (double*) malloc(N * sizeof(double));
+    double* rowB = (double*) malloc(N * sizeof(double));
 
     for (i = 0; i < N; i++) {
 
+
         rowA = &matA[i * N];
 
-        for (j = 0; j < N; j++) {
+        for (k = 0; k < N; k++) {
 
             sumTotal = 0.0;    
+            rowB = &matB[k * N];
+            double aIK = rowA[k];
 
             //Sum the products of row indices of A and column indices of B
-            for (k = 0; k < N; k++) {
-                double aIK = rowA[k];
-                //printf("%e, ", aIK);
-                bIndex = k*N + j;
+            for (j = 0; j < N; j++) {                
                 
-                sumTotal = sumTotal + aIK * matB[bIndex];                
+                cIndex = i*N + j;
+                printf("%d ", cIndex);
+                matC[cIndex] += aIK * rowB[j];
             }
-
-            //printf("\n");
-            cIndex = i*N + j;
-            matC[cIndex] = sumTotal;
+            printf("\n");
         }
-    }
-        	
-
-    /*
-	for(i = 0; i < N; i++){
-		for(j = 0; j < N; j++){
-			
-        	// Sum total
-        	double sumTotal = 0.0;    
-
-        	for (k = 0; k < N; k++){
-        		aIndex = i*N + k;
-        		bIndex = k*N + j;
-
-        		sumTotal = sumTotal + matA[aIndex] * matB[bIndex];
-        	}
-               	
-        	cIndex = i*N + j;
-            matC[cIndex] = sumTotal;
-        }
-    }*/
-    
+    }    
 }
