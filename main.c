@@ -124,7 +124,7 @@ int main(int argc, const char *argv[])
     {
         case 0: /* Matrix-matrix multiply */
             {
-                printf("Performing matrix-matrix multiply operation\n");
+                //printf("Performing matrix-matrix multiply operation\n");
                 double *matA, *matB, *matC1, *matC2;
 
                 // Allocate memory
@@ -154,7 +154,7 @@ int main(int argc, const char *argv[])
 
   		  tm = tp2.tv_sec + tp2.tv_nsec/1E9;
   		  tm -= tp1.tv_sec + tp1.tv_nsec/1E9;
-                  printf("Elapsed time for naive mat-mat mult.: %.09f seconds\n",tm);
+                  printf("%.09f\t",tm);
                 }
 
                 if(execOPT) {
@@ -170,7 +170,7 @@ int main(int argc, const char *argv[])
 
 		  tm = tp2.tv_sec + tp2.tv_nsec/1E9;
   		  tm -= tp1.tv_sec + tp1.tv_nsec/1E9;
-                  printf("Elapsed time for optimized mat-mat mult.: %.09f seconds\n",tm);
+                  printf("%.09f\n",tm);
                 }
 
                 // Verify results (compare the two matrices)
@@ -198,7 +198,7 @@ int main(int argc, const char *argv[])
 
         case 1: /* Matrix-vector multiply */
             {
-                printf("Performing matrix-vector multiply operation\n");
+                //printf("Performing matrix-vector multiply operation\n");
                 double *matA, *vecB, *vecC1,*vecC2;
 
                 // Allocate memory
