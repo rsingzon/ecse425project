@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 
 #define PROBSIZE 10
@@ -136,25 +137,40 @@ int main(int argc, const char *argv[])
                 randInitialize(N*N,matA);
                 randInitialize(N*N,matB);
 
-                clock_t tic, toc;
+                //clock_t tic, toc;
                 double tm;
+		struct timespec tp1, tp2;
+		//unsigned long tm2;
 
                 if(execNaive) {
                   // Perform naive matA x matB = matC1
-                  tic = clock();
+                  //tic = clock();
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp1);
                   matMult(N,matA,matB,matC1);
-                  toc = clock();
-                  tm = (double)(toc - tic) / CLOCKS_PER_SEC;
-                  printf("Elapsed time for naive mat-mat mult.: %f seconds\n",tm);
+                  //toc = clock();
+  		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp2);
+                  //tm = ((double) (tic - toc)) /CLOCKS_PER_SEC;
+		  //tm2 = tp2.tv_nsec - tp1.tv_nsec;
+
+  		  tm = tp2.tv_sec + tp2.tv_nsec/1E9;
+  		  tm -= tp1.tv_sec + tp1.tv_nsec/1E9;
+                  printf("Elapsed time for naive mat-mat mult.: %.09f seconds\n",tm);
                 }
 
                 if(execOPT) {
                   // Perform optimized matA x matB = matC2
-                  tic = clock();
+                  //tic = clock();
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp1);
                   matMult_opt(N,matA,matB,matC2);
-                  toc = clock();
-                  tm = (double)(toc - tic) / CLOCKS_PER_SEC;
-                  printf("Elapsed time for optimized mat-mat mult.: %f seconds\n",tm);
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp2);
+                  //toc = clock();
+                  //tm = (double)(toc - tic)/ CLOCKS_PER_SEC;
+                  //printf("Elapsed time for optimized mat-mat mult.: %f seconds\n",tm);
+ 		  //tm2 = tp2.tv_nsec - tp1.tv_nsec;
+
+		  tm = tp2.tv_sec + tp2.tv_nsec/1E9;
+  		  tm -= tp1.tv_sec + tp1.tv_nsec/1E9;
+                  printf("Elapsed time for optimized mat-mat mult.: %.09f seconds\n",tm);
                 }
 
                 // Verify results (compare the two matrices)
@@ -195,25 +211,44 @@ int main(int argc, const char *argv[])
                 randInitialize(N*N,matA);
                 randInitialize(N,vecB);
 
-                clock_t tic, toc;
+                //clock_t tic, toc;
                 double tm;
+
+		struct timespec tp1, tp2;
+		//unsigned long tm2;
+
 
                 if(execNaive) {
                   // Perform naive matA x vecB = vecC1
-                  tic = clock();
+                  //tic = clock();
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp1);
                   matVecMult(N,matA,vecB,vecC1);
-                  toc = clock();
-                  tm = (double)(toc - tic) / CLOCKS_PER_SEC;
-                  printf("Elapsed time for naive mat-vec mult.: %f seconds\n",tm);
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp2);
+                  //toc = clock();
+                  //tm = (double)(toc - tic) / CLOCKS_PER_SEC;
+                  //printf("Elapsed time for naive mat-vec mult.: %f seconds\n",tm);
+		  //tm2 = tp2.tv_nsec - tp1.tv_nsec;
+
+ 		  tm = tp2.tv_sec + tp2.tv_nsec/1E9;
+  		  tm -= tp1.tv_sec + tp1.tv_nsec/1E9;
+
+                  printf("Elapsed time for naive mat-vec mult.: %.09f seconds\n",tm);
                 }
 
                 if(execOPT) {
                   // Perform optimized matA x vecB = vecC2
-                  tic = clock();
+                  //tic = clock();
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp1);
                   matVecMult_opt(N,matA,vecB,vecC2);
-                  toc = clock();
-                  tm = (double)(toc - tic) / CLOCKS_PER_SEC;
-                  printf("Elapsed time for optimized mat-vec mult.: %f seconds\n",tm);
+		  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tp2);
+                  //toc = clock();
+                  //tm = (double)(toc - tic) / CLOCKS_PER_SEC;
+                  //printf("Elapsed time for optimized mat-vec mult.: %f seconds\n",tm);
+		  //tm2 = tp2.tv_nsec - tp1.tv_nsec;
+			
+		  tm = tp2.tv_sec + tp2.tv_nsec/1E9;
+  		  tm -= tp1.tv_sec + tp1.tv_nsec/1E9;
+                  printf("Elapsed time for optimized mat-vec mult.: %.09f seconds\n",tm);
                 }
 
                 // Verify results
