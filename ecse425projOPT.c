@@ -1,33 +1,31 @@
 #include "ecse425projOPT.h"
 #include "ecse425proj.h"
 #include <stdio.h>
-#define chunkSize 32
+#define chunkSize 2000
 
-double solveSet(int chunk, int row, int N, const double *matA, const double *vecB, double *vecC) {
-	int indexB;
-    	double sumTotal = 0;
-	
-	for (indexB = 0; indexB < N; indexB++) {
-		sumTotal = sumTotal + matA[indexB+row*N+chunk*chunkSize]*vecB[indexB];
-		
-	}
-    	
-	
-	return sumTotal;
-}
 
 void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC) 
 {
-    int indexC, chunk;   
+    int indexC, chunk, indexB;
+    double sumTotal = 0;  
 	for (chunk = 0; chunk < N/chunkSize; chunk++) {
 		for (indexC = 0; indexC < N; indexC++) {
-			vecC[indexC] += solveSet(chunk,indexC,chunkSize,matA,vecB,vecC);
+			sumTotal = 0;
+			for (indexB = 0; indexB < chunkSize; indexB++) {
+				sumTotal = sumTotal + matA[indexB+indexC*N+chunk*chunkSize]*vecB[indexB+chunk*chunkSize];
+			}
+			vecC[indexC] += sumTotal;
     		}
 	}
-	for (indexC = 0; indexC < N; indexC++) {
-		vecC[indexC] += solveSet(chunk,indexC,N%chunkSize,matA,vecB,vecC);
-    	}
-
+	if (N%chunkSize != 0) {
+		for (indexC = 0; indexC < N; indexC++) {
+			sumTotal = 0;
+			for (indexB = 0; indexB < N%chunkSize; indexB++) {
+				sumTotal = sumTotal + matA[indexB+indexC*N+chunk*chunkSize]*vecB[indexB+chunk*chunkSize];
+			}
+			vecC[indexC] += sumTotal;
+		}
+	}
 }
 
 
