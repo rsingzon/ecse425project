@@ -6,26 +6,39 @@
 
 void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC) 
 {
-    int indexC, chunk, indexB;
-    double sumTotal = 0;  
-	for (chunk = 0; chunk < N/chunkSize; chunk++) {
-		for (indexC = 0; indexC < N; indexC++) {
-			sumTotal = 0;
-			for (indexB = 0; indexB < chunkSize; indexB++) {
-				sumTotal = sumTotal + matA[indexB+indexC*N+chunk*chunkSize]*vecB[indexB+chunk*chunkSize];
-			}
-			vecC[indexC] += sumTotal;
-    		}
+   // Initialize Variables
+   int indexC, indexB, mulFactor;
+   double sumTotal = 0;    
+
+   // Basic Loop
+   for (indexC = 0; indexC < N; indexC++) {
+
+	// Reset the parameters
+	sumTotal = 0;
+	mulFactor = indexC*N;
+
+	// Unroll the second loop a bit.
+	for (indexB = 0; indexB < N; indexB += 10) {
+		sumTotal = sumTotal + matA[mulFactor+indexB]*vecB[indexB];
+		sumTotal = sumTotal + matA[mulFactor+indexB+1]*vecB[indexB+1];
+		sumTotal = sumTotal + matA[mulFactor+indexB+2]*vecB[indexB+2];
+		sumTotal = sumTotal + matA[mulFactor+indexB+3]*vecB[indexB+3];
+		sumTotal = sumTotal + matA[mulFactor+indexB+4]*vecB[indexB+4];
+		sumTotal = sumTotal + matA[mulFactor+indexB+5]*vecB[indexB+5];
+		sumTotal = sumTotal + matA[mulFactor+indexB+6]*vecB[indexB+6];
+		sumTotal = sumTotal + matA[mulFactor+indexB+7]*vecB[indexB+7];
+		sumTotal = sumTotal + matA[mulFactor+indexB+8]*vecB[indexB+8];
+		sumTotal = sumTotal + matA[mulFactor+indexB+9]*vecB[indexB+9];
 	}
-	if (N%chunkSize != 0) {
-		for (indexC = 0; indexC < N; indexC++) {
-			sumTotal = 0;
-			for (indexB = 0; indexB < N%chunkSize; indexB++) {
-				sumTotal = sumTotal + matA[indexB+indexC*N+chunk*chunkSize]*vecB[indexB+chunk*chunkSize];
-			}
-			vecC[indexC] += sumTotal;
-		}
+	
+	// Finish in the case of not an even division of 10
+	for (indexB = indexB; indexB < N; indexB++) {
+		sumTotal = sumTotal + matA[mulFactor+indexB]*vecB[indexB];
 	}
+
+	// Store the result
+	vecC[indexC] = sumTotal;
+   }
 }
 
 

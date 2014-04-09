@@ -15,4 +15,4 @@ SOURCE="main.c ecse425proj.c ecse425projOPT.c"
 
 # compile! (this will generate an executable named "ecse425proj" in
 # the directory "build/")
-gcc $FLAGS $SOURCE -o build/ecse425proj -lrt
+gcc $FLAGS $SOURCE -lm -o build/ecse425proj -lrt
