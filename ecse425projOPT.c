@@ -1,25 +1,33 @@
 #include "ecse425projOPT.h"
 #include "ecse425proj.h"
-
 #include <stdio.h>
+#define chunkSize 2000
+
 
 void matVecMult_opt(int N, const double *matA, const double *vecB, double *vecC) 
 {
-    int indexC, indexB;
-    double sumTotal = 0;    
-
-    for (indexC = 0; indexC < N; indexC++) {
-	sumTotal = 0;
-
-	for (indexB = 0; indexB < N; indexB++) {
-		sumTotal = sumTotal + matA[indexC*N+indexB]*vecB[indexB];
+    int indexC, chunk, indexB;
+    double sumTotal = 0;  
+	for (chunk = 0; chunk < N/chunkSize; chunk++) {
+		for (indexC = 0; indexC < N; indexC++) {
+			sumTotal = 0;
+			for (indexB = 0; indexB < chunkSize; indexB++) {
+				sumTotal = sumTotal + matA[indexB+indexC*N+chunk*chunkSize]*vecB[indexB+chunk*chunkSize];
+			}
+			vecC[indexC] += sumTotal;
+    		}
 	}
-
-
-	vecC[indexC] = sumTotal;
-	
-    }
+	if (N%chunkSize != 0) {
+		for (indexC = 0; indexC < N; indexC++) {
+			sumTotal = 0;
+			for (indexB = 0; indexB < N%chunkSize; indexB++) {
+				sumTotal = sumTotal + matA[indexB+indexC*N+chunk*chunkSize]*vecB[indexB+chunk*chunkSize];
+			}
+			vecC[indexC] += sumTotal;
+		}
+	}
 }
+
 
 void matMult_opt(int N, const double *matA, const double *matB, double *matC) 
 {
