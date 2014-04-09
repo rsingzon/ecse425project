@@ -70,12 +70,12 @@
 #valgrind --tool=cachegrind --I1=4096,2,2048 --D1=32768,2,2048  --LL=4194304,16,1024  build/./ecse425proj -N 100 -operation 0 -naive
 
 #Varying lower level cache
-valgrind --tool=cachegrind --I1=32768,8,512  --D1=32768,2,2048  --LL=524288,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
-valgrind --tool=cachegrind --I1=32768,8,512  --D1=32768,2,2048	--LL=1048576,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
-valgrind --tool=cachegrind --I1=32768,8,512  --D1=32768,2,2048	--LL=2097152,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
-valgrind --tool=cachegrind --I1=32768,8,512  --D1=32768,2,2048	--LL=4194304,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
-valgrind --tool=cachegrind --I1=32768,8,512  --D1=32768,2,2048	--LL=8388608,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
-valgrind --tool=cachegrind --I1=32768,8,512  --D1=32768,2,2048	--LL=16777216,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
+valgrind --tool=cachegrind --I1=32768,8,512  --D1=4096,2,2048  	--LL=524288,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
+valgrind --tool=cachegrind --I1=32768,8,512  --D1=4096,2,2048	--LL=1048576,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
+valgrind --tool=cachegrind --I1=32768,8,512  --D1=4096,2,2048	--LL=2097152,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
+valgrind --tool=cachegrind --I1=32768,8,512  --D1=4096,2,2048	--LL=4194304,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
+valgrind --tool=cachegrind --I1=32768,8,512  --D1=4096,2,2048	--LL=8388608,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
+valgrind --tool=cachegrind --I1=32768,8,512  --D1=4096,2,2048	--LL=16777216,16,1024  	build/./ecse425proj -N 1000 -operation 0 -naive
 
 #I1 cache:         32768 B, 64 B, 8-way associative
 #D1 cache:         32768 B, 64 B, 8-way associative
