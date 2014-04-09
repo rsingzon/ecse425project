@@ -1,3 +1,7 @@
+build/./ecse425proj -N 200 -operation 1
+build/./ecse425proj -N 500 -operation 1
+build/./ecse425proj -N 1000 -operation 1
+build/./ecse425proj -N 2000 -operation 1
 build/./ecse425proj -N 2500 -operation 1
 build/./ecse425proj -N 3000 -operation 1
 build/./ecse425proj -N 3500 -operation 1
